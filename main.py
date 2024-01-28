@@ -50,10 +50,7 @@ def run(
     save_segmentation_images
 ):
     methods = {key: item for (key, item) in methods}
-
-    run_save_path = utils.create_storage_folder(
-        results_path, log_project, log_group, run_name, mode="overwrite"
-    )
+    run_save_path = utils.create_storage_folder(results_path, log_project, log_group, run_name, mode="overwrite")
 
     pid = os.getpid()
     list_of_dataloaders = methods["get_dataloaders"](seed)
@@ -62,19 +59,15 @@ def run(
 
     result_collect = []
     for dataloader_count, dataloaders in enumerate(list_of_dataloaders):
-        LOGGER.info(
-            "Evaluating dataset [{}] ({}/{})...".format(
-                dataloaders["training"].name,
+        LOGGER.info("Evaluating dataset [{}] ({}/{})...".format(dataloaders["training"].name,
                 dataloader_count + 1,
-                len(list_of_dataloaders),
-            )
-        )
-
+                len(list_of_dataloaders),))
         utils.fix_seeds(seed, device)
 
         dataset_name = dataloaders["training"].name
 
         imagesize = dataloaders["training"].dataset.imagesize
+
         simplenet_list = methods["get_simplenet"](imagesize, device)
 
         models_dir = os.path.join(run_save_path, "models")
